@@ -1,4 +1,6 @@
 api_authentication:
   path: /api/login
+  methods: [POST]
 jwt_refresh:
   path: /api/auth/refresh
+  methods: [POST]

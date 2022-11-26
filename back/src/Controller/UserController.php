@@ -26,6 +26,9 @@ class UserController extends AbstractController
     public function createPlayer(Request $request, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $params = json_decode($request->getContent(), true);
+        if (empty($params['email']) || empty($params['password'] || empty($params['username']))) {
+            return new JsonResponse(['error' => 'Missing parameters'], Response::HTTP_BAD_REQUEST);
+        }
 
         $user = new User();
         // if email is not unique

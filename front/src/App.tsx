@@ -21,7 +21,6 @@ import {
   css,
 } from "@mui/material";
 import React from "react";
-import { green, orange, purple } from "@mui/material/colors";
 import { Calendar } from "./components/Calendar";
 import { theme } from "./components/Theme";
 
@@ -44,6 +43,7 @@ function App() {
           flexDirection: "column",
           height: "100vh",
           maxHeight: "100vh",
+          backgroundColor: theme.palette.primary.dark,
         }}
       >
         <AppBar

@@ -39,6 +39,9 @@ const CalendarContainer = styled("div")((props) => ({
   top: "50%",
   transform: "translate(-50%, -50%)",
   ".fc .fc-col-header-cell-cushion": {
-    color: theme.palette.primary.main + " !important",
+    color: "white",
+  },
+  ".fc-toolbar-title": {
+    color: "white",
   },
 }));
