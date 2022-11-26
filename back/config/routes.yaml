@@ -1,0 +1,4 @@
+api_authentication:
+  path: /api/login
+jwt_refresh:
+  path: /api/auth/refresh
