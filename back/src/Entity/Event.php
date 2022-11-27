@@ -2,29 +2,57 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\EventRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: EventRepository::class)]
-#[ApiResource]
+/**
+ * @ORM\Table(name="event")
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ */
 class Event
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+     * @ApiProperty(identifier=true)
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Id
+     */
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"event:read"})
+     */
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"event:read"})
+     */
     private ?string $description = null;
-
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventImage::class)]
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EventImage", mappedBy="event", orphanRemoval=true)
+     * @Groups({"event:read"})
+     */
     private Collection $eventImage;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"event:read"})
+     */
+    private ?\DateTimeInterface $start = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"event:read"})
+     */
+    private ?\DateTimeInterface $end = null;
 
     public function __construct()
     {
@@ -86,6 +114,30 @@ class Event
                 $eventImage->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStart(): ?\DateTimeInterface
+    {
+        return $this->start;
+    }
+
+    public function setStart(?\DateTimeInterface $start): self
+    {
+        $this->start = $start;
+
+        return $this;
+    }
+
+    public function getEnd(): ?\DateTimeInterface
+    {
+        return $this->end;
+    }
+
+    public function setEnd(\DateTimeInterface $end): self
+    {
+        $this->end = $end;
 
         return $this;
     }

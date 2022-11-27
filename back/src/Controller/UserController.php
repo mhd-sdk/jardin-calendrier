@@ -22,7 +22,9 @@ class UserController extends AbstractController
         $this->userRepository = $doctrine->getRepository(User::class);
     }
 
-    #[Route('/api/register', name: 'user.create', methods: ['POST'])]
+    /**
+     * @Route("/api/register", name="user.create", methods={"POST"})
+     */
     public function createPlayer(Request $request, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $params = json_decode($request->getContent(), true);
@@ -53,8 +55,9 @@ class UserController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
-    // route to grant role admin
-    #[Route('/api/grant/{id}', name: 'user.grant-admin', methods: ['GET'])]
+    /**
+     * @Route("/api/grant/{id}", name="user.grant-admin", methods={"GET"})
+     */
     public function grantAdmin($id): JsonResponse
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -72,8 +75,12 @@ class UserController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-    // ROUTE TO DELETE USER
-    #[Route('/api/delete/{id}', name: 'user.delete', methods: ['DELETE'])]
+
+
+    /**
+     * @Route("/api/delete/{id}", name="user.delete", methods={"DELETE"})
+     */
+
     public function deleteUser($id): JsonResponse
     {
         // if user is not admin
