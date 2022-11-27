@@ -1,11 +1,11 @@
 import "./App.css";
-import FullCalendar, { Theme } from "@fullcalendar/react";
-
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SwipeableViews from "react-swipeable-views";
-import { Menu } from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   styled,
   alpha,
@@ -15,24 +15,60 @@ import {
   Typography,
   Tabs,
   Tab,
-  Box,
-  createTheme,
   ThemeProvider,
-  css,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+  TextField,
+  Tooltip,
 } from "@mui/material";
+import { SnackbarProvider, useSnackbar, VariantType } from "notistack";
 import React from "react";
 import { Calendar } from "./components/Calendar";
 import { theme } from "./components/Theme";
+import { TransitionProps } from "@mui/material/transitions";
+import LoginModal from "./components/LoginModal/LoginModal";
 
 function App() {
-  const [value, setValue] = React.useState(0);
+  // ###############- profile icon menu -############### //
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  // ###############- tabs -############### //
+  const [activeTab, setActiveTab] = React.useState(1);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setActiveTab(newValue);
   };
 
   const handleChangeIndex = (index: number) => {
-    setValue(index);
+    setActiveTab(index);
+  };
+  // ###############- snackbar -############### //
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSnackBar = (variant: VariantType, message: string) => {
+    enqueueSnackbar(message, { variant });
+  };
+  // ###############- authentication -############### //
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    handleMenuClose();
+    handleSnackBar("success", "Déconnexion...");
   };
 
   return (
@@ -49,6 +85,7 @@ function App() {
         <AppBar
           sx={{
             height: "6vh",
+            zIndex: 10,
           }}
           position="static"
         >
@@ -59,7 +96,7 @@ function App() {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <Menu />
+              <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" component="div">
               Calendrier des événements jardin
@@ -85,7 +122,7 @@ function App() {
                     backgroundColor: theme.palette.primary.dark,
                   },
                 }}
-                value={value}
+                value={activeTab}
                 onChange={handleChange}
                 indicatorColor="secondary"
                 textColor="inherit"
@@ -106,14 +143,23 @@ function App() {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ ml: 2 }}
-              >
-                <AccountCircleIcon />
-              </IconButton>
+              <Tooltip title={isAuthenticated ? "connecté" : "anonyme"}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ ml: 2 }}
+                  onClick={(event) => {
+                    if (isAuthenticated) {
+                      handleMenuOpen(event);
+                    } else {
+                      setIsLoginOpen(true);
+                    }
+                  }}
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </Tooltip>
             </AppBarActions>
           </Toolbar>
         </AppBar>
@@ -121,14 +167,34 @@ function App() {
           containerStyle={{
             height: "94vh",
             maxHeight: "94vh",
+            transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
           }}
-          index={value}
+          index={activeTab}
           onChangeIndex={handleChangeIndex}
         >
           <div>1</div>
           <Calendar />
         </SwipeableViews>
       </div>
+      <LoginModal
+        handleSnackBar={handleSnackBar}
+        isLoginOpen={isLoginOpen}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsAuthenticated={setIsAuthenticated}
+      />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleMenuClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
     </ThemeProvider>
   );
 }
@@ -186,4 +252,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-export default App;
+export default function IntegrationNotistack() {
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
+  );
+}

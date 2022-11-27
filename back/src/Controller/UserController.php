@@ -56,7 +56,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/grant/{id}", name="user.grant-admin", methods={"GET"})
+     * @Route("/api/user/grant/{id}", name="user.grant-admin", methods={"GET"})
      */
     public function grantAdmin($id): JsonResponse
     {
@@ -78,7 +78,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/api/delete/{id}", name="user.delete", methods={"DELETE"})
+     * @Route("/api/user/delete/{id}", name="user.delete", methods={"DELETE"})
      */
 
     public function deleteUser($id): JsonResponse

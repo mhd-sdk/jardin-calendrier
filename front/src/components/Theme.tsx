@@ -16,4 +16,14 @@ export const theme = createTheme({
   shape: {
     borderRadius: 4,
   },
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#00856f",
+          color: "#fff",
+        },
+      },
+    },
+  },
 });
