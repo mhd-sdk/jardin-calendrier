@@ -30,7 +30,8 @@ export const Calendar = () => {
   );
 };
 const CalendarContainer = styled("div")((props) => ({
-  padding: "20px 0px",
+  padding: "20px 20px",
+  backgroundColor: theme.palette.primary.main,
   width: "80%",
   maxHeight: "100%",
   position: "relative",
@@ -43,5 +44,30 @@ const CalendarContainer = styled("div")((props) => ({
   },
   ".fc-toolbar-title": {
     color: "white",
+  },
+  ".fc-daygrid-day-number": {
+    color: "white",
+  },
+  ".fc-button-primary": {
+    backgroundColor: theme.palette.primary.light + " !important",
+    border: theme.palette.primary.light + " 1px solid !important",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.dark,
+      border: theme.palette.primary.dark + " 1px solid",
+    },
+  },
+  ".fc-button-active": {
+    backgroundColor: theme.palette.primary.dark + " !important",
+    border: theme.palette.primary.dark + " 1px solid !important",
+  },
+  ".fc-highlight": {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  ".fc-day-today ": {
+    backgroundColor: theme.palette.primary.light + " !important",
+  },
+  ".fc-today-button": {
+    color: "white",
+    backgroundColor: theme.palette.primary.light,
   },
 }));
