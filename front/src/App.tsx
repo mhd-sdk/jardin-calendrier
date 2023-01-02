@@ -1,11 +1,14 @@
 import "./App.css";
-import FullCalendar, { Theme } from "@fullcalendar/react";
-
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SwipeableViews from "react-swipeable-views";
-import { Menu } from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import "dayjs/locale/fr";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import {
   styled,
   alpha,
@@ -15,24 +18,109 @@ import {
   Typography,
   Tabs,
   Tab,
-  Box,
-  createTheme,
   ThemeProvider,
-  css,
+  Tooltip,
+  StyledEngineProvider,
 } from "@mui/material";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
+import { SnackbarProvider, useSnackbar, VariantType } from "notistack";
 import React from "react";
 import { Calendar } from "./components/Calendar";
 import { theme } from "./components/Theme";
+import { TransitionProps } from "@mui/material/transitions";
+import LoginModal from "./components/LoginModal/LoginModal";
+import { getEvents } from "./utils/api/api";
+import CreateEventModal from "./components/CreateEventModal/CreateEventModal";
 
 function App() {
-  const [value, setValue] = React.useState(0);
+  const eventsFetched = React.useRef(false);
+  const [startDate, setStartDate] = React.useState<Date>(new Date());
+  const [endDate, setEndDate] = React.useState<Date>(new Date());
+  // ###############- events -############### //
+  const [events, setEvents] = React.useState([]);
+  React.useEffect(() => {
+    if (eventsFetched.current) {
+      return;
+    }
+    function fetchEvents() {
+      getEvents()
+        .then((args) => {
+          let eventCopy = [...events];
+          setEvents(eventCopy.concat(args.data));
+        })
+        .catch((error) => {
+          handleSnackBar(
+            "error",
+            "erreur lors de la récupération des événements"
+          );
+        });
+    }
+    fetchEvents();
+    eventsFetched.current = true;
+  }, []);
+
+  const [isCreateEventOpen, setIsCreateEventOpen] = React.useState(false);
+
+  // ###############- profile icon menu -############### //
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  // ###############- tabs -############### //
+  const [activeTab, setActiveTab] = React.useState(1);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setActiveTab(newValue);
   };
 
   const handleChangeIndex = (index: number) => {
-    setValue(index);
+    setActiveTab(index);
+  };
+  // ###############- snackbar -############### //
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSnackBar = (variant: VariantType, message: string) => {
+    enqueueSnackbar(message, { variant, color: "blue" });
+  };
+
+  // ###############- authentication -############### //
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const [isAuthenticating, setIsAuthenticating] = React.useState(false);
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    handleMenuClose();
+    handleSnackBar("success", "Déconnexion...");
+  };
+  // on first render, check if token is present in local storage, if so, set isAuthenticated to FALSE and remove token from local storage
+  React.useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsAuthenticated(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+    }
+  }, []);
+  const refreshEvents = () => {
+    getEvents()
+      .then((args) => {
+        let eventCopy = [...events];
+        setEvents(args.data);
+        handleSnackBar("success", "Calendrier rechargé");
+      })
+      .catch((error) => {
+        handleSnackBar(
+          "error",
+          "erreur lors de la récupération des événements"
+        );
+      });
   };
 
   return (
@@ -49,6 +137,7 @@ function App() {
         <AppBar
           sx={{
             height: "6vh",
+            zIndex: 10,
           }}
           position="static"
         >
@@ -59,7 +148,7 @@ function App() {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <Menu />
+              <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" component="div">
               Calendrier des événements jardin
@@ -85,7 +174,7 @@ function App() {
                     backgroundColor: theme.palette.primary.dark,
                   },
                 }}
-                value={value}
+                value={activeTab}
                 onChange={handleChange}
                 indicatorColor="secondary"
                 textColor="inherit"
@@ -106,14 +195,23 @@ function App() {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ ml: 2 }}
-              >
-                <AccountCircleIcon />
-              </IconButton>
+              <Tooltip title={isAuthenticated ? "connecté" : "anonyme"}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ ml: 2 }}
+                  onClick={(event) => {
+                    if (isAuthenticated) {
+                      handleMenuOpen(event);
+                    } else {
+                      setIsLoginOpen(true);
+                    }
+                  }}
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </Tooltip>
             </AppBarActions>
           </Toolbar>
         </AppBar>
@@ -121,14 +219,51 @@ function App() {
           containerStyle={{
             height: "94vh",
             maxHeight: "94vh",
+            transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
           }}
-          index={value}
+          index={activeTab}
           onChangeIndex={handleChangeIndex}
         >
           <div>1</div>
-          <Calendar />
+          <Calendar
+            handleSnackBar={handleSnackBar}
+            events={events}
+            setEvents={setEvents}
+            setIsCreateEventOpen={setIsCreateEventOpen}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
         </SwipeableViews>
       </div>
+      <LoginModal
+        setIsAuthenticating={setIsAuthenticating}
+        isAuthenticating={isAuthenticating}
+        handleSnackBar={handleSnackBar}
+        isLoginOpen={isLoginOpen}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsAuthenticated={setIsAuthenticated}
+      />
+      <CreateEventModal
+        handleSnackBar={handleSnackBar}
+        isCreateEventOpen={isCreateEventOpen}
+        setIsCreateEventOpen={setIsCreateEventOpen}
+        startDate={startDate}
+        endDate={endDate}
+        refreshEvents={refreshEvents}
+      />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleMenuClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
     </ThemeProvider>
   );
 }
@@ -186,4 +321,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-export default App;
+export default function IntegrationNotistack() {
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <StyledEngineProvider injectFirst={false}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+          <App />
+        </LocalizationProvider>
+      </StyledEngineProvider>
+    </SnackbarProvider>
+  );
+}

@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 export const theme = createTheme({
   palette: {
     primary: {
@@ -15,5 +15,42 @@ export const theme = createTheme({
   },
   shape: {
     borderRadius: 4,
+  },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: "standard",
+      },
+    },
+
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#00856f",
+          color: "#fff",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        sizeMedium: {
+          color: "#ffffff",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          color: "#ffffff",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+      },
+    },
   },
 });
