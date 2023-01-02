@@ -1,29 +1,84 @@
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { DateSelectArg } from "@fullcalendar/react";
 import { styled } from "@mui/material";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import frLocale from "@fullcalendar/core/locales/fr";
 import { theme } from "./Theme";
-export const Calendar = () => {
+import React from "react";
+import { VariantType } from "notistack";
+import { getEvents } from "../utils/api/api";
+
+type Props = {
+  handleSnackBar: (variant: VariantType, message: string) => void;
+  events: any;
+  setEvents: React.Dispatch<React.SetStateAction<any>>;
+  setIsCreateEventOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+};
+export const Calendar = ({
+  handleSnackBar,
+  events,
+  setEvents,
+  setIsCreateEventOpen,
+  setStartDate,
+  setEndDate,
+}: Props) => {
+  const onSelect = (arg: DateSelectArg) => {
+    const start = new Date(arg.startStr);
+    start.setHours(8, 0, 0);
+    const end = new Date(arg.endStr);
+    end.setHours(18, 0, 0);
+    end.setDate(end.getDate() - 1);
+    setIsCreateEventOpen(true);
+    setStartDate(start);
+    setEndDate(end);
+  };
+  const refreshEvents = () => {
+    getEvents()
+      .then((args) => {
+        let eventCopy = [...events];
+        setEvents(args.data);
+        handleSnackBar("success", "Calendrier rechargé");
+      })
+      .catch((error) => {
+        handleSnackBar(
+          "error",
+          "erreur lors de la récupération des événements"
+        );
+      });
+  };
   return (
     <CalendarContainer>
       <FullCalendar
+        customButtons={{
+          Reload: {
+            text: "Actualiser",
+            click: () => {
+              refreshEvents();
+            },
+          },
+        }}
         height={"100%"}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        events={events}
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
+          right: "Reload dayGridMonth,timeGridWeek,timeGridDay",
         }}
         locale={frLocale}
-        editable={true}
+        editable={false}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         select={(arg) => {
-          alert(arg.startStr);
+          onSelect(arg);
+        }}
+        eventClick={(arg) => {
+          console.log(arg.event.id);
         }}
       />
     </CalendarContainer>

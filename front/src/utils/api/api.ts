@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 export const API_BASE = {
   BASE: "http://127.0.0.1:8000/api/",
@@ -26,28 +27,16 @@ export const API_URLS = {
       ROUTE: API_BASE.BASE + "user/delete/",
     },
   },
-};
-
-export const test = () => {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  var raw = JSON.stringify({
-    username: "mehdi",
-    password: "123poi",
-  });
-
-  var requestOptions: any = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
-
-  fetch("http://127.0.0.1:8000/api/login", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+  API_EVENTS: {
+    API_GET_EVENTS: {
+      ROUTE: API_BASE.BASE + "event/all",
+      METHOD: "GET",
+    },
+    API_CREATE_EVENT: {
+      ROUTE: API_BASE.BASE + "event/new",
+      METHOD: "POST",
+    },
+  },
 };
 
 export const loginRequest = (username: string, password: string) => {
@@ -67,9 +56,50 @@ export const loginRequest = (username: string, password: string) => {
     .then((response) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("refresh_token", response.data.refresh_token);
+      console.log(jwt_decode(response.data.token));
+
       return response.status;
     })
     .catch((error) => {
       return error.response.status;
     });
+};
+export type Event = {
+  title: string;
+  images: string[];
+  start: string;
+  end: string;
+};
+
+export const createEvent = async (eventBody: any) => {
+  // get token from local storage
+  const token = localStorage.getItem("token");
+  const config = {
+    method: API_URLS.API_EVENTS.API_CREATE_EVENT.METHOD,
+    url: API_URLS.API_EVENTS.API_CREATE_EVENT.ROUTE,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    data: eventBody,
+  };
+  return axios(config)
+    .then((response) => {
+      return response.status;
+    })
+    .catch((error) => {
+      return error.response.status;
+    });
+};
+
+export const getEvents = async () => {
+  const config = {
+    method: API_URLS.API_EVENTS.API_GET_EVENTS.METHOD,
+    url: API_URLS.API_EVENTS.API_GET_EVENTS.ROUTE,
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + token,
+    },
+  };
+  return axios(config);
 };

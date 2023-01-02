@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.SnackbarItem-variantSuccess {
+  background-color: #00856f !important;
+}
