@@ -19,3 +19,10 @@ code {
 .fc-daygrid-event {
   cursor: pointer;
 }
+.fc-direction-ltr .fc-daygrid-event.fc-event-end {
+  color: white;
+  background-color: #00856f;
+}
+.rsw-toolbar {
+  background-color: #007965 !important;
+}

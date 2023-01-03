@@ -56,7 +56,6 @@ export const loginRequest = (username: string, password: string) => {
     .then((response) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("refresh_token", response.data.refresh_token);
-      console.log(jwt_decode(response.data.token));
 
       return response.status;
     })
@@ -96,6 +95,18 @@ export const getEvents = async () => {
   const config = {
     method: API_URLS.API_EVENTS.API_GET_EVENTS.METHOD,
     url: API_URLS.API_EVENTS.API_GET_EVENTS.ROUTE,
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + token,
+    },
+  };
+  return axios(config);
+};
+
+export const getImage = async (imageId: number) => {
+  const config = {
+    method: "GET",
+    url: API_BASE.BASE + "image/" + imageId,
     headers: {
       "Content-Type": "application/json",
       // Authorization: "Bearer " + token,

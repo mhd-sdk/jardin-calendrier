@@ -16,8 +16,10 @@ type Props = {
   setIsCreateEventOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setStartDate: React.Dispatch<React.SetStateAction<Date>>;
   setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+  setActiveTab: React.Dispatch<React.SetStateAction<number>>;
 };
 export const Calendar = ({
+  setActiveTab,
   handleSnackBar,
   events,
   setEvents,
@@ -64,6 +66,12 @@ export const Calendar = ({
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={events}
+        eventTimeFormat={{
+          hour: "2-digit",
+          minute: "2-digit",
+          meridiem: false,
+        }}
+        timeZone={"Europe/Paris"}
         headerToolbar={{
           left: "prev,next today",
           center: "title",
@@ -78,7 +86,7 @@ export const Calendar = ({
           onSelect(arg);
         }}
         eventClick={(arg) => {
-          console.log(arg.event.id);
+          setActiveTab(0);
         }}
       />
     </CalendarContainer>

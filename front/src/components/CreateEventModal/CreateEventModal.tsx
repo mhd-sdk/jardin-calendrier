@@ -103,7 +103,6 @@ export default function CreateEventModal({
         end: endDateTime,
         description: description,
       };
-      console.log(postBody);
       const result = await createEvent(postBody);
       if (result === 201) {
         setRequestIsLoading(false);
@@ -181,7 +180,6 @@ export default function CreateEventModal({
                 if (newValue && inputEndDate) {
                   // check if the new date is after the end date
                   if (newValue.toDate() <= inputEndDate) {
-                    console.log(newValue.toDate());
                     setInputStartDate(newValue.toDate());
                   } else {
                     handleSnackBar(
@@ -368,13 +366,6 @@ export default function CreateEventModal({
           onClick={() => setIsCreateEventOpen(false)}
         >
           Annuler
-        </Button>
-        <Button
-          onClick={() => {
-            console.log(inputStartDate);
-          }}
-        >
-          Debug
         </Button>
         <LoadingButton
           sx={{ color: "white", width: "fit-content" }}

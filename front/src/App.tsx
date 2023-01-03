@@ -27,10 +27,10 @@ import { SnackbarProvider, useSnackbar, VariantType } from "notistack";
 import React from "react";
 import { Calendar } from "./components/Calendar";
 import { theme } from "./components/Theme";
-import { TransitionProps } from "@mui/material/transitions";
 import LoginModal from "./components/LoginModal/LoginModal";
 import { getEvents } from "./utils/api/api";
 import CreateEventModal from "./components/CreateEventModal/CreateEventModal";
+import EventsList from "./components/EventsList";
 
 function App() {
   const eventsFetched = React.useRef(false);
@@ -57,6 +57,7 @@ function App() {
     }
     fetchEvents();
     eventsFetched.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [isCreateEventOpen, setIsCreateEventOpen] = React.useState(false);
@@ -224,8 +225,9 @@ function App() {
           index={activeTab}
           onChangeIndex={handleChangeIndex}
         >
-          <div>1</div>
+          <EventsList events={events} />
           <Calendar
+            setActiveTab={setActiveTab}
             handleSnackBar={handleSnackBar}
             events={events}
             setEvents={setEvents}
