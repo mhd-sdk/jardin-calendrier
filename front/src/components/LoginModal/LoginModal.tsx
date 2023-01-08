@@ -88,12 +88,6 @@ export default function LoginModal({
         />
       </DialogContent>
       <DialogActions>
-        <Button
-          sx={{ color: "white", marginRight: "auto" }}
-          onClick={() => setIsLoginOpen(false)}
-        >
-          Nouvel utilisateur ?
-        </Button>
         <Button sx={{ color: "white" }} onClick={() => setIsLoginOpen(false)}>
           Annuler
         </Button>

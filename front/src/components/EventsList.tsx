@@ -84,11 +84,11 @@ export default function EventsList({
               >
                 <CardActionArea>
                   <CardHeader
-                    action={
-                      <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                      </IconButton>
-                    }
+                    // action={
+                    //   <IconButton aria-label="settings">
+                    //     <MoreVertIcon />
+                    //   </IconButton>
+                    // }
                     sx={{ color: "white !important" }}
                     title={event.title}
                     subheaderTypographyProps={{ color: "#b1b1b1" }}

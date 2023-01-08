@@ -144,14 +144,6 @@ function App() {
           position="static"
         >
           <Toolbar variant="dense">
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" color="inherit" component="div">
               Calendrier des événements jardin
             </Typography>
@@ -188,7 +180,7 @@ function App() {
             </StyledTabs>
 
             <AppBarActions>
-              <Search>
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -196,7 +188,7 @@ function App() {
                   placeholder="Rechercher..."
                   inputProps={{ "aria-label": "search" }}
                 />
-              </Search>
+              </Search> */}
               <Tooltip title={isAuthenticated ? "connecté" : "anonyme"}>
                 <IconButton
                   edge="start"
