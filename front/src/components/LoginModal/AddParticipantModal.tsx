@@ -131,7 +131,7 @@ export default function AddParticipantModal({
           <MenuItem value={"3e année"}>
             <em>3e année</em>
           </MenuItem>
-          <MenuItem value={0}>
+          <MenuItem value={"autre"}>
             <em>Autre</em>
           </MenuItem>
         </Select>

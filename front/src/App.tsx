@@ -259,9 +259,7 @@ function App() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
       </Menu>
     </ThemeProvider>
   );

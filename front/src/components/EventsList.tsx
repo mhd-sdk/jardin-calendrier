@@ -2,6 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { API_BASE } from "../utils/api/api";
 import {
   Accordion,
   AccordionDetails,
@@ -66,9 +67,9 @@ export default function EventsList({
           {events.map((event: EventType) => {
             const start = dayjs(event.start);
             let miniature;
+
             if (event.images.length !== 0 && event.images[0].id !== null) {
-              miniature =
-                "http://127.0.0.1:8000/api/image/" + event.images[0].id;
+              miniature = API_BASE.BASE + "image/" + event.images[0].id;
             }
 
             return (
