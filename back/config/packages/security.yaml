@@ -43,7 +43,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - {
-              path: ^/api/(login|register|doc|auth|image|event/all),
+              path: ^/api/(login|register|doc|auth|image|event/all|event/add-participant),
               roles: PUBLIC_ACCESS,
           }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

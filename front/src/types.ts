@@ -7,4 +7,5 @@ export interface EventType {
   start: Date;
   end: Date;
   description: string;
+  participants: { id: number; email: string; fullname: string; year: string }[];
 }

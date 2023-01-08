@@ -38,6 +38,7 @@ function App() {
   const [endDate, setEndDate] = React.useState<Date>(new Date());
   // ###############- events -############### //
   const [events, setEvents] = React.useState([]);
+  console.log(events);
   React.useEffect(() => {
     if (eventsFetched.current) {
       return;
@@ -225,7 +226,11 @@ function App() {
           index={activeTab}
           onChangeIndex={handleChangeIndex}
         >
-          <EventsList events={events} />
+          <EventsList
+            refreshEvents={refreshEvents}
+            events={events}
+            handleSnackBar={handleSnackBar}
+          />
           <Calendar
             setActiveTab={setActiveTab}
             handleSnackBar={handleSnackBar}

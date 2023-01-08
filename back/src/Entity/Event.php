@@ -32,7 +32,7 @@ class Event
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255000, nullable=true)
      * @Groups({"event:read"})
      */
     private ?string $description = null;
@@ -54,9 +54,16 @@ class Event
      */
     private ?\DateTimeInterface $end = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="event", orphanRemoval=true)
+     * @Groups({"event:read"})
+     */
+    private $participants;
+
     public function __construct()
     {
         $this->eventImage = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,6 +145,36 @@ class Event
     public function setEnd(\DateTimeInterface $end): self
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getEvent() === $this) {
+                $participant->setEvent(null);
+            }
+        }
 
         return $this;
     }

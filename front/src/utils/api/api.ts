@@ -36,6 +36,10 @@ export const API_URLS = {
       ROUTE: API_BASE.BASE + "event/new",
       METHOD: "POST",
     },
+    API_ADD_PARTICIPANT: {
+      ROUTE: API_BASE.BASE + "event/add-participant",
+      METHOD: "POST",
+    },
   },
 };
 
@@ -81,6 +85,35 @@ export const createEvent = async (eventBody: any) => {
       Authorization: "Bearer " + token,
     },
     data: eventBody,
+  };
+  return axios(config)
+    .then((response) => {
+      return response.status;
+    })
+    .catch((error) => {
+      return error.response.status;
+    });
+};
+
+export const addParticipant = async (
+  eventId: number,
+  email: string,
+  fullname: string,
+  year: string
+) => {
+  // get token from local storage
+  const config = {
+    method: API_URLS.API_EVENTS.API_ADD_PARTICIPANT.METHOD,
+    url: API_URLS.API_EVENTS.API_ADD_PARTICIPANT.ROUTE,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      eventId: eventId,
+      email: email,
+      fullname: fullname,
+      year: year,
+    },
   };
   return axios(config)
     .then((response) => {

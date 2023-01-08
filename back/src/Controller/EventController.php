@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Entity\EventImage;
+use App\Entity\Participant;
 use App\Service\UploadService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class EventController extends AbstractController
         $this->userRepository = $doctrine->getRepository(User::class);
         $this->eventRepository = $doctrine->getRepository(Event::class);
         $this->eventImageRepository = $doctrine->getRepository(EventImage::class);
+        $this->participantRepository = $doctrine->getRepository(Participant::class);
         $this->uploader = new UploadService($projectDir);
     }
 
@@ -81,10 +83,59 @@ class EventController extends AbstractController
                 'description' => $event->getDescription(),
                 'start' => $event->getStart(),
                 'end' => $event->getEnd(),
-                'images' => $event->getEventImage()
+                'images' => $event->getEventImage(),
+                'participants' => $event->getParticipants()
             ];
         }
 
         return new JsonResponse($serializer->serialize($data, 'json', ['groups' => ['event:read']]), Response::HTTP_OK, [], true);
+    }
+
+    // add participant to event
+    /**
+     * @Route("/api/event/add-participant", name="event.add-participant", methods={"POST"})
+     */
+    public function addParticipant(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (empty($data['email'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+        if (empty($data['fullname'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+        if (empty($data['year'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (empty($data['eventId'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+        $participant = new Participant();
+        $participant->setEmail($data['email']);
+        $participant->setFullname($data['fullname']);
+        $participant->setYear($data['year']);
+
+        $event = $this->eventRepository->find($data['eventId']);
+        $this->em->persist($participant);
+
+        if (!$event) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Event not found'], Response::HTTP_NOT_FOUND);
+        }
+        $event->addParticipant($participant);
+        $participants = $this->participantRepository->findBy(['event' => $data['eventId']]);
+        // if participant mail already exists
+        foreach ($participants as $participant) {
+            if ($participant->getEmail() == $data['email']) {
+                return new JsonResponse(['status' => 'error', 'message' => 'Participant already exists'], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $this->em->persist($event);
+        $this->em->flush();
+
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Participant added'], Response::HTTP_CREATED);
     }
 }
