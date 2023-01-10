@@ -38,7 +38,6 @@ function App() {
   const [endDate, setEndDate] = React.useState<Date>(new Date());
   // ###############- events -############### //
   const [events, setEvents] = React.useState([]);
-  console.log(events);
   React.useEffect(() => {
     if (eventsFetched.current) {
       return;
@@ -138,7 +137,8 @@ function App() {
       >
         <AppBar
           sx={{
-            height: "6vh",
+            height: "20",
+
             zIndex: 10,
           }}
           position="static"
@@ -189,7 +189,13 @@ function App() {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search> */}
-              <Tooltip title={isAuthenticated ? "connecté" : "anonyme"}>
+              <Tooltip
+                title={
+                  isAuthenticated
+                    ? "connecté en tant qu'administrateur"
+                    : "Se connecter en tant qu'administrateur"
+                }
+              >
                 <IconButton
                   edge="start"
                   color="inherit"
@@ -211,14 +217,14 @@ function App() {
         </AppBar>
         <SwipeableViews
           containerStyle={{
-            height: "94vh",
-            maxHeight: "94vh",
+            height: "90vh",
             transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
           }}
           index={activeTab}
           onChangeIndex={handleChangeIndex}
         >
           <EventsList
+            isAuthenticated={isAuthenticated}
             refreshEvents={refreshEvents}
             events={events}
             handleSnackBar={handleSnackBar}

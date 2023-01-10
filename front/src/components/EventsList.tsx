@@ -2,12 +2,15 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import { API_BASE } from "../utils/api/api";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Avatar,
+  Badge,
+  BadgeProps,
   CardActionArea,
   IconButton,
   Menu,
@@ -32,22 +35,34 @@ import { red } from "chalk";
 import { getImage } from "../utils/api/api";
 import AddParticipantModal from "./LoginModal/AddParticipantModal";
 import { VariantType } from "notistack";
+import EventDetails from "./EventDetails/EventDetails";
 dayjs.locale("fr");
 interface EventsListProps {
   events: EventType[];
   handleSnackBar: (variant: VariantType, message: string) => void;
   refreshEvents: () => void;
+  isAuthenticated: boolean;
 }
-
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: 0,
+    top: 25,
+    padding: "0 4px",
+  },
+}));
 export default function EventsList({
   events,
   handleSnackBar,
   refreshEvents,
+  isAuthenticated,
 }: EventsListProps) {
   const [isAddParticipantOpen, setIsAddParticipantOpen] = React.useState(false);
-  const [selectedEvent, setSelectedEvent] = React.useState<EventType | null>();
+  const [selectedEvent, setSelectedEvent] = React.useState<EventType>(
+    events[0]
+  );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [isOpenEventDetails, setIsOpenEventDetails] = React.useState(false);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,8 +97,14 @@ export default function EventsList({
                   backgroundColor: "#005849",
                   color: "white",
                 }}
+                key={event.id}
               >
-                <CardActionArea>
+                <CardActionArea
+                  onClick={(e) => {
+                    setSelectedEvent(event);
+                    setIsOpenEventDetails(true);
+                  }}
+                >
                   <CardHeader
                     // action={
                     //   <IconButton aria-label="settings">
@@ -110,28 +131,60 @@ export default function EventsList({
                     }}
                     disableSpacing
                   >
-                    <Tooltip title={"voir les participants"}>
+                    {event.participants.length > 0 && (
+                      <Tooltip title={"voir les participants"}>
+                        <IconButton
+                          aria-label="share"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleClick(e);
+                            setSelectedEvent(event);
+                          }}
+                        >
+                          <StyledBadge badgeContent={event.participants.length}>
+                            <PeopleAltIcon />
+                          </StyledBadge>
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
+                    <Tooltip title={"Participer a cet événement"}>
                       <IconButton
-                        aria-label="share"
                         onClick={(e) => {
-                          handleClick(e);
+                          e.stopPropagation();
+                          setIsAddParticipantOpen(true);
                           setSelectedEvent(event);
                         }}
+                        aria-label="PersonAddIcon"
                       >
-                        <PeopleAltIcon />
+                        <PersonAddIcon />
                       </IconButton>
                     </Tooltip>
-
-                    {/* button to add people */}
-                    <IconButton
-                      onClick={() => {
-                        setIsAddParticipantOpen(true);
-                        setSelectedEvent(event);
-                      }}
-                      aria-label="PersonAddIcon"
-                    >
-                      <PersonAddIcon />
-                    </IconButton>
+                    {isAuthenticated && (
+                      <Tooltip title={"Copier la liste de diffusion"}>
+                        <IconButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // create string with all emails of participants separated with ,
+                            const emails = event.participants.map(
+                              (participant) => {
+                                return participant.email;
+                              }
+                            );
+                            navigator.clipboard.writeText(emails.join(","));
+                            // open new tab google mail and paste emails into destination
+                            // window.open(
+                            //   "https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=" +
+                            //     emails.join(","),
+                            //   "_blank"
+                            // );
+                          }}
+                          aria-label="PersonAddIcon"
+                        >
+                          <AttachEmailIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </CardActions>
                 </CardActionArea>
               </Card>
@@ -158,19 +211,20 @@ export default function EventsList({
           }}
         >
           {selectedEvent?.participants.map((participant, idx) => (
-            <Tooltip title="copier l'email">
+            <Tooltip title={isAuthenticated && "copier l'email"} key={idx}>
               <MenuItem
-                onClick={() => {
-                  navigator.clipboard.writeText(participant.email);
-                  handleSnackBar("success", "email copié");
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isAuthenticated) {
+                    navigator.clipboard.writeText(participant.email);
+                    handleSnackBar("success", "email copié");
+                  }
                 }}
                 key={idx}
               >
-                {participant.fullname +
-                  " | " +
-                  participant.email +
-                  " | " +
-                  participant.year}
+                {participant.fullname + " | "}
+                {isAuthenticated && participant.email + " | "}
+                {participant.year}
               </MenuItem>
             </Tooltip>
           ))}
@@ -178,6 +232,12 @@ export default function EventsList({
             <MenuItem>Aucun participant</MenuItem>
           )}
         </Menu>
+        <EventDetails
+          event={selectedEvent}
+          open={isOpenEventDetails}
+          setOpen={setIsOpenEventDetails}
+          isAuthenticated={isAuthenticated}
+        />
       </ThemeProvider>
     </>
   );
