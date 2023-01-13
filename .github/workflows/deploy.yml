@@ -17,7 +17,7 @@ jobs:
       - name: Build and Deploy Frontend
         run: |
           cd front
-          npm install
+          yarn install
           npm run build
           # deploy frontend code to server
       - name: Build and Deploy Backend
