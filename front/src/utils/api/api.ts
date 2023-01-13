@@ -2,7 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 export const API_BASE = {
-  BASE: "http://127.0.0.1:8000/api/",
+  BASE: process.env.REACT_APP_API_BASE_URL,
 };
 export const API_URLS = {
   API_AUTH: {
