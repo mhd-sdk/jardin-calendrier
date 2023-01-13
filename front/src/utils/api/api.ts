@@ -36,6 +36,10 @@ export const API_URLS = {
       ROUTE: API_BASE.BASE + "event/new",
       METHOD: "POST",
     },
+    API_EDIT_EVENT: {
+      ROUTE: API_BASE.BASE + "event/edit",
+      METHOD: "PUT",
+    },
     API_ADD_PARTICIPANT: {
       ROUTE: API_BASE.BASE + "event/add-participant",
       METHOD: "POST",
@@ -80,6 +84,26 @@ export const createEvent = async (eventBody: any) => {
   const config = {
     method: API_URLS.API_EVENTS.API_CREATE_EVENT.METHOD,
     url: API_URLS.API_EVENTS.API_CREATE_EVENT.ROUTE,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    data: eventBody,
+  };
+  return axios(config)
+    .then((response) => {
+      return response.status;
+    })
+    .catch((error) => {
+      return error.response.status;
+    });
+};
+export const editEvent = async (eventBody: any) => {
+  // get token from local storage
+  const token = localStorage.getItem("token");
+  const config = {
+    method: API_URLS.API_EVENTS.API_EDIT_EVENT.METHOD,
+    url: API_URLS.API_EVENTS.API_EDIT_EVENT.ROUTE,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,

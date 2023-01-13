@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AttachEmailIcon from "@mui/icons-material/AttachEmail";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import { API_BASE } from "../utils/api/api";
 import {
   Accordion,
@@ -62,6 +63,11 @@ export default function EventsList({
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const [emailsAnchor, setEmailsAnchor] = React.useState<null | HTMLElement>(
+    null
+  );
+  const openEmails = Boolean(emailsAnchor);
   const [isOpenEventDetails, setIsOpenEventDetails] = React.useState(false);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -160,35 +166,23 @@ export default function EventsList({
                         <PersonAddIcon />
                       </IconButton>
                     </Tooltip>
-                    {isAuthenticated && (
-                      <Tooltip title={"Copier la liste de diffusion"}>
+                    {isAuthenticated && event.participants.length > 0 && (
+                      <Tooltip title={"options de diffusion"}>
                         <IconButton
                           onClick={(e) => {
+                            setSelectedEvent(event);
                             e.stopPropagation();
-                            // create string with all emails of participants separated with ,
-                            const emails = event.participants.map(
-                              (participant) => {
-                                return participant.email;
-                              }
-                            );
-                            navigator.clipboard.writeText(emails.join(","));
-                            // open new tab google mail and paste emails into destination
-                            // window.open(
-                            //   "https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=" +
-                            //     emails.join(","),
-                            //   "_blank"
-                            // );
+                            setEmailsAnchor(e.currentTarget);
                           }}
                           aria-label="PersonAddIcon"
                         >
-                          <AttachEmailIcon />
+                          <AlternateEmailIcon />
                         </IconButton>
                       </Tooltip>
                     )}
                   </CardActions>
                 </CardActionArea>
               </Card>
-              // modal to add people
             );
           })}
         </div>
@@ -199,6 +193,58 @@ export default function EventsList({
           selectedEvent={selectedEvent}
           refreshEvents={refreshEvents}
         />
+        <Menu
+          id="long-menu"
+          anchorEl={emailsAnchor}
+          open={openEmails}
+          onClose={() => setEmailsAnchor(null)}
+          PaperProps={{
+            style: {
+              maxHeight: 48 * 4.5,
+            },
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              const emails = selectedEvent?.participants.map((participant) => {
+                return participant.email;
+              });
+              navigator.clipboard.writeText(emails.join(","));
+              setEmailsAnchor(null);
+              handleSnackBar("success", "Liste de diffusion copiée");
+            }}
+          >
+            Copier la liste de diffusion
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              const fullNames = selectedEvent?.participants.map(
+                (participant) => {
+                  return participant.fullname;
+                }
+              );
+              navigator.clipboard.writeText(fullNames.join(","));
+              setEmailsAnchor(null);
+              handleSnackBar("success", "Liste des participants copiée");
+            }}
+          >
+            Copier la liste des participants
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              const emails = selectedEvent?.participants.map((participant) => {
+                return participant.email;
+              });
+              window.open(
+                "https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=" +
+                  emails.join(","),
+                "_blank"
+              );
+            }}
+          >
+            Ouvrir la liste de diffusion sur Gmail
+          </MenuItem>
+        </Menu>
         <Menu
           id="long-menu"
           anchorEl={anchorEl}
@@ -234,9 +280,12 @@ export default function EventsList({
         </Menu>
         <EventDetails
           event={selectedEvent}
+          setEvent={setSelectedEvent}
           open={isOpenEventDetails}
           setOpen={setIsOpenEventDetails}
           isAuthenticated={isAuthenticated}
+          handleSnackbar={handleSnackBar}
+          refreshEvents={refreshEvents}
         />
       </ThemeProvider>
     </>

@@ -9,8 +9,8 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { DefaultEditor } from "react-simple-wysiwyg";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -301,6 +301,7 @@ export default function CreateEventModal({
             />
           </Grid>
           <Grid xs={16}>
+            <DefaultEditor value={html} onChange={onChange} />
             <List>
               {imagesBase64.map((image, index) => (
                 <>
@@ -339,7 +340,6 @@ export default function CreateEventModal({
                 </>
               ))}
             </List>
-            <DefaultEditor value={html} onChange={onChange} />
           </Grid>
           <Grid xs={16}>
             <Button

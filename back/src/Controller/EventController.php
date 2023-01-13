@@ -17,6 +17,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EventController extends AbstractController
 {
+    private $em;
+    private $userRepository;
+    private $eventRepository;
+    private $eventImageRepository;
+    private $participantRepository;
+    private $uploader;
+
     public function __construct(ManagerRegistry $doctrine, string $projectDir)
     {
         $this->em = $doctrine->getManager();
@@ -67,6 +74,72 @@ class EventController extends AbstractController
 
         return new JsonResponse(['status' => 'success', 'message' => 'Event created'], Response::HTTP_CREATED);
     }
+
+    // edit event
+    /**
+     * @Route("/api/event/edit", name="event.edit", methods={"PUT"})
+     */
+    public function editEvent(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (empty($data['title']) || empty($data['description']) || empty($data['start']) || empty($data['end'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $event = $this->eventRepository->find($data['id']);
+        $event->setTitle($data['title']);
+        $event->setDescription($data['description']);
+        $start = new \DateTime($data['start']);
+        $event->setStart($start);
+
+        $end = new \DateTime($data['end']);
+        $event->setEnd($end);
+
+        // remove all images
+        $eventImages = $this->eventImageRepository->findBy(['event' => $event]);
+        foreach ($eventImages as $eventImage) {
+            $this->em->remove($eventImage);
+        }
+
+        if (isset($data['images'])) {
+            foreach ($data['images'] as $image) {
+                $eventImage = new EventImage();
+                $eventImage->setEvent($event);
+                $eventImage->setBase64($image['base64']);
+                $eventImage->setImagePath($this->uploader->upload($image['base64'], $image['filename']));
+                $this->em->persist($eventImage);
+            }
+        }
+
+
+        $this->em->persist($event);
+        $this->em->flush();
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Event edited'], Response::HTTP_CREATED);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @Route("/api/event/all", name="event.list", methods={"GET"})
      */
