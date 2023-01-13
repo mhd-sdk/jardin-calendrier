@@ -1,10 +1,11 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import { API_BASE } from "../utils/api/api";
+import { API_BASE, deleteEvent } from "../utils/api/api";
 import {
   Accordion,
   AccordionDetails,
@@ -12,7 +13,13 @@ import {
   Avatar,
   Badge,
   BadgeProps,
+  Button,
   CardActionArea,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Menu,
   MenuItem,
@@ -74,6 +81,24 @@ export default function EventsList({
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [openAlertRemove, setOpenAlertRemove] = React.useState(false);
+  const openConfirmModal = () => {
+    setOpenAlertRemove(true);
+  };
+  const closeConfirmModal = () => {
+    setOpenAlertRemove(false);
+  };
+  const confirmRemove = async () => {
+    setOpenAlertRemove(false);
+    const result = await deleteEvent(selectedEvent.id);
+    if (result === 201) {
+      handleSnackBar("success", "L'événement a bien été supprimé");
+      refreshEvents();
+    } else {
+      handleSnackBar("error", "Une erreur est survenue");
+    }
   };
   return (
     <>
@@ -180,11 +205,68 @@ export default function EventsList({
                         </IconButton>
                       </Tooltip>
                     )}
+                    {isAuthenticated && (
+                      <Tooltip title={"Supprimer l'évenement"}>
+                        <IconButton
+                          aria-label="share"
+                          style={{
+                            marginRight: "auto",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openConfirmModal();
+                            setSelectedEvent(event);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </CardActions>
                 </CardActionArea>
               </Card>
             );
           })}
+          <Dialog
+            open={openAlertRemove}
+            onClose={closeConfirmModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Voulez vous vraiment supprimer cet événement ?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText
+                style={{
+                  color: "white",
+                }}
+                id="alert-dialog-description"
+              >
+                Cette action entrainera la suppression définive de l'événement,
+                toutes les photos et participants seront supprimés.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={closeConfirmModal}
+                style={{
+                  color: "white",
+                }}
+              >
+                Annuler
+              </Button>
+              <Button
+                style={{
+                  color: "white",
+                }}
+                onClick={confirmRemove}
+                autoFocus
+              >
+                Valider
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
         <AddParticipantModal
           isAddParticipantOpen={isAddParticipantOpen}

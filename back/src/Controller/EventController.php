@@ -119,6 +119,26 @@ class EventController extends AbstractController
         return new JsonResponse(['status' => 'success', 'message' => 'Event edited'], Response::HTTP_CREATED);
     }
 
+    // delete event
+    /**
+     * @Route("/api/event/delete", name="event.delete", methods={"DELETE"})
+     */
+    public function deleteEvent(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (empty($data['id'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Missing data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $event = $this->eventRepository->find($data['id']);
+
+        $this->em->remove($event);
+        $this->em->flush();
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Event deleted'], Response::HTTP_CREATED);
+    }
+
 
 
 

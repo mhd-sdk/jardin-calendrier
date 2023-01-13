@@ -324,18 +324,7 @@ export default function EditEvent({
               />
             </Button>
           </Grid>
-          <Grid xs={16}>
-            <Button
-              component="label"
-              variant="contained"
-              fullWidth
-              onClick={() => {
-                console.log(editedEvent);
-              }}
-            >
-              Debug
-            </Button>
-          </Grid>
+          <Grid xs={16}></Grid>
         </Grid>
         {/* debug button */}
       </Paper>
