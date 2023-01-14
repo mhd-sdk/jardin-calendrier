@@ -39,7 +39,7 @@ export default function EditEvent({
   editedEvent,
   setEditedEvent,
 }: EditEventProps): JSX.Element {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(event.images.length > 0);
   const saveEditedEvent = async () => {
     // for each editedEvent.images, if it has not a filename, then set it to "old filee"
     const newImages = editedEvent.images.map((image) => {
