@@ -16,13 +16,26 @@ code {
   height: 100px;
 }
 
-.fc-daygrid-event {
-  cursor: pointer;
-}
 .fc-direction-ltr .fc-daygrid-event.fc-event-end {
   color: white;
   background-color: #00856f;
 }
 .rsw-toolbar {
   background-color: #007965 !important;
+}
+.react-swipeable-view-container {
+  height: 100%;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 8px;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  margin-right: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 8px;
 }

@@ -79,14 +79,10 @@ export const Calendar = ({
         }}
         locale={frLocale}
         editable={false}
-        selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         select={(arg) => {
           onSelect(arg);
-        }}
-        eventClick={(arg) => {
-          setActiveTab(0);
         }}
       />
     </CalendarContainer>
@@ -94,14 +90,9 @@ export const Calendar = ({
 };
 const CalendarContainer = styled("div")((props) => ({
   padding: "20px 20px",
+  margin: "20px 80px 0 80px",
   backgroundColor: theme.palette.primary.main,
-  width: "80%",
-  maxHeight: "100%",
-  position: "relative",
-  height: "calc(100% - 40px)",
-  left: "50%",
-  top: "50%",
-  transform: "translate(-50%, -50%)",
+  height: "80%",
   ".fc .fc-col-header-cell-cushion": {
     color: "white",
   },

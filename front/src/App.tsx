@@ -21,6 +21,8 @@ import {
   ThemeProvider,
   Tooltip,
   StyledEngineProvider,
+  Grid,
+  Box,
 } from "@mui/material";
 import type {} from "@mui/x-date-pickers/themeAugmentation";
 import { SnackbarProvider, useSnackbar, VariantType } from "notistack";
@@ -31,6 +33,7 @@ import LoginModal from "./components/LoginModal/LoginModal";
 import { getEvents } from "./utils/api/api";
 import CreateEventModal from "./components/CreateEventModal/CreateEventModal";
 import EventsList from "./components/EventsList";
+import { Home } from "./Home";
 
 function App() {
   const eventsFetched = React.useRef(false);
@@ -72,7 +75,7 @@ function App() {
     setAnchorEl(null);
   };
   // ###############- tabs -############### //
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -126,61 +129,75 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div
+      <Box
+        display="flex"
+        flexDirection="column"
+        height="100vh"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          maxHeight: "100vh",
           backgroundColor: theme.palette.primary.dark,
+          zIndex: 10,
         }}
       >
-        <AppBar
-          sx={{
-            height: "20",
-
+        {/* <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            maxHeight: "100vh",
+            backgroundColor: theme.palette.primary.dark,
+          }}
+        > */}
+        <Box
+          style={{
             zIndex: 10,
           }}
-          position="static"
         >
-          <Toolbar variant="dense">
-            <Typography variant="h6" color="inherit" component="div">
-              Calendrier des événements jardin
-            </Typography>
-            <StyledTabs>
-              <Tabs
-                sx={{
-                  borderTopLeftRadius: theme.shape.borderRadius,
-                  borderTopRightRadius: theme.shape.borderRadius,
-                  "& button": {
-                    color: "white",
-                    margin: "0",
-                    fontFamily: "'Roboto','Helvetica','Arial','sans-serif'",
-                    fontSize: "20px",
-                    lineHeight: "1.6",
-                    letterSpacing: "0.0075em",
-                    textTransform: "none",
-                    BorderRadius: 18,
-                    transition: "all 0.2s",
-                  },
-                  "& button:hover": {
-                    color: "white",
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                }}
-                value={activeTab}
-                onChange={handleChange}
-                indicatorColor="secondary"
-                textColor="inherit"
-                variant="standard"
-              >
-                <Tab label="Activitées" />
-                <Tab label="Calendrier" />
-              </Tabs>
-            </StyledTabs>
+          <AppBar
+            sx={{
+              zIndex: 10,
+              height: "56px",
+            }}
+            position="static"
+          >
+            <Toolbar variant="dense">
+              <Typography variant="h6" color="inherit" component="div">
+                Calendrier des événements jardin
+              </Typography>
+              <StyledTabs>
+                <Tabs
+                  sx={{
+                    borderTopLeftRadius: theme.shape.borderRadius,
+                    borderTopRightRadius: theme.shape.borderRadius,
+                    "& button": {
+                      color: "white",
+                      margin: "0",
+                      fontFamily: "'Roboto','Helvetica','Arial','sans-serif'",
+                      fontSize: "20px",
+                      lineHeight: "1.6",
+                      letterSpacing: "0.0075em",
+                      textTransform: "none",
+                      BorderRadius: 18,
+                      transition: "all 0.2s",
+                    },
+                    "& button:hover": {
+                      color: "white",
+                      backgroundColor: theme.palette.primary.dark,
+                    },
+                  }}
+                  value={activeTab}
+                  onChange={handleChange}
+                  indicatorColor="secondary"
+                  textColor="inherit"
+                  variant="standard"
+                >
+                  <Tab label="Accueil" />
+                  <Tab label="Activitées" />
+                  <Tab label="Calendrier" />
+                </Tabs>
+              </StyledTabs>
 
-            <AppBarActions>
-              {/* <Search>
+              <AppBarActions>
+                {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -189,84 +206,93 @@ function App() {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search> */}
-              <Tooltip
-                title={
-                  isAuthenticated
-                    ? "connecté en tant qu'administrateur"
-                    : "Se connecter en tant qu'administrateur"
-                }
-              >
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  sx={{ ml: 2 }}
-                  onClick={(event) => {
-                    if (isAuthenticated) {
-                      handleMenuOpen(event);
-                    } else {
-                      setIsLoginOpen(true);
-                    }
-                  }}
+                <Tooltip
+                  title={
+                    isAuthenticated
+                      ? "connecté en tant qu'administrateur"
+                      : "Se connecter en tant qu'administrateur"
+                  }
                 >
-                  <AccountCircleIcon />
-                </IconButton>
-              </Tooltip>
-            </AppBarActions>
-          </Toolbar>
-        </AppBar>
-        <SwipeableViews
-          containerStyle={{
-            height: "90vh",
-            transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
-          }}
-          index={activeTab}
-          onChangeIndex={handleChangeIndex}
-        >
-          <EventsList
-            isAuthenticated={isAuthenticated}
-            refreshEvents={refreshEvents}
-            events={events}
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ ml: 2 }}
+                    onClick={(event) => {
+                      if (isAuthenticated) {
+                        handleMenuOpen(event);
+                      } else {
+                        setIsLoginOpen(true);
+                      }
+                    }}
+                  >
+                    <AccountCircleIcon />
+                  </IconButton>
+                </Tooltip>
+              </AppBarActions>
+            </Toolbar>
+          </AppBar>
+        </Box>
+
+        <Box flex={1}>
+          <SwipeableViews
+            style={{
+              height: "calc(100vh - 56px)",
+              overflow: "hidden",
+            }}
+            containerStyle={{
+              transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
+            }}
+            index={activeTab}
+            onChangeIndex={handleChangeIndex}
+          >
+            <Home></Home>
+            <EventsList
+              isAuthenticated={isAuthenticated}
+              refreshEvents={refreshEvents}
+              events={events}
+              handleSnackBar={handleSnackBar}
+            />
+            <Calendar
+              setActiveTab={setActiveTab}
+              handleSnackBar={handleSnackBar}
+              events={events}
+              setEvents={setEvents}
+              setIsCreateEventOpen={setIsCreateEventOpen}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
+          </SwipeableViews>
+          {/* </div> */}
+          <LoginModal
+            setIsAuthenticating={setIsAuthenticating}
+            isAuthenticating={isAuthenticating}
             handleSnackBar={handleSnackBar}
+            isLoginOpen={isLoginOpen}
+            setIsLoginOpen={setIsLoginOpen}
+            setIsAuthenticated={setIsAuthenticated}
           />
-          <Calendar
-            setActiveTab={setActiveTab}
+          <CreateEventModal
             handleSnackBar={handleSnackBar}
-            events={events}
-            setEvents={setEvents}
+            isCreateEventOpen={isCreateEventOpen}
             setIsCreateEventOpen={setIsCreateEventOpen}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
+            startDate={startDate}
+            endDate={endDate}
+            refreshEvents={refreshEvents}
           />
-        </SwipeableViews>
-      </div>
-      <LoginModal
-        setIsAuthenticating={setIsAuthenticating}
-        isAuthenticating={isAuthenticating}
-        handleSnackBar={handleSnackBar}
-        isLoginOpen={isLoginOpen}
-        setIsLoginOpen={setIsLoginOpen}
-        setIsAuthenticated={setIsAuthenticated}
-      />
-      <CreateEventModal
-        handleSnackBar={handleSnackBar}
-        isCreateEventOpen={isCreateEventOpen}
-        setIsCreateEventOpen={setIsCreateEventOpen}
-        startDate={startDate}
-        endDate={endDate}
-        refreshEvents={refreshEvents}
-      />
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleMenuClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
-      </Menu>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleMenuClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
+          </Menu>
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 }
