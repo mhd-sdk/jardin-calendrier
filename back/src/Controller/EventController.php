@@ -58,17 +58,13 @@ class EventController extends AbstractController
         if (isset($data['images'])) {
             foreach ($data['images'] as $image) {
                 // create file object
-
-
                 $eventImage = new EventImage();
                 $eventImage->setEvent($event);
-                $eventImage->setBase64($image['base64']);
+                // $eventImage->setBase64($image['base64']);
                 $eventImage->setImagePath($this->uploader->upload($image['base64'], $image['filename']));
                 $this->em->persist($eventImage);
             }
         }
-
-
         $this->em->persist($event);
         $this->em->flush();
 

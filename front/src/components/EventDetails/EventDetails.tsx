@@ -86,6 +86,8 @@ export default function FullScreenDialog({
     };
 
     await editEvent(editedEvent);
+    setIsEditing(false);
+    setOpen(false);
     refreshEvents();
   };
 

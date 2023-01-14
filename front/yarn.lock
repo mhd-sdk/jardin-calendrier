@@ -8381,6 +8381,11 @@ react-modal-images@^0.1.0:
   resolved "https://registry.yarnpkg.com/react-modal-images/-/react-modal-images-0.1.0.tgz#79d69eb37fe4da5e66e562f5062d4ab314b39264"
   integrity sha512-f8i58M+42oelmcynvDCVVPCOYxdCEgCMgeK8V14u0w6D1Qb/sPn96jF4tv6TNx5q3EvDrDcyf2Svy21Nbf4MfA==
 
+react-on-images-loaded@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/react-on-images-loaded/-/react-on-images-loaded-2.2.8.tgz#bb8dca1f031498bc40d17bccfd274185017811af"
+  integrity sha512-Uzwyyf+yRgwxfEqL/7aa49rxIic6g+LUbk4TLepWjTLFqKkuv3nY28H2q6wiqQZhl6G60AN1wXvp43490CUW8w==
+
 react-refresh@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"

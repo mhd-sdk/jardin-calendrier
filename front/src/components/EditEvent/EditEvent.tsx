@@ -10,7 +10,9 @@ import {
   AppBar,
   Typography,
 } from "@mui/material";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
+import OnImagesLoaded from "react-on-images-loaded";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import React from "react";
@@ -37,6 +39,7 @@ export default function EditEvent({
   editedEvent,
   setEditedEvent,
 }: EditEventProps): JSX.Element {
+  const [isLoading, setIsLoading] = React.useState(true);
   const saveEditedEvent = async () => {
     // for each editedEvent.images, if it has not a filename, then set it to "old filee"
     const newImages = editedEvent.images.map((image) => {
@@ -135,7 +138,27 @@ export default function EditEvent({
   }
   return (
     <>
+      {isLoading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
+            position: "fixed",
+            zIndex: 10,
+            top: 0,
+            left: 0,
+            backgroundColor: "rgba(255,255,255,0.6)",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+
       <Paper
+        hidden={isLoading}
         style={{
           padding: "20px 20px 20px 20px ",
           margin: "auto",
@@ -271,39 +294,45 @@ export default function EditEvent({
             />
             <List>
               {editedEvent.images?.map((image, index) => (
-                <>
-                  <ListItem
-                    key={index}
-                    secondaryAction={
-                      <IconButton
-                        onClick={() => {
-                          console.log("remove :" + index);
-                          onImageRemove(index);
+                <OnImagesLoaded
+                  onLoaded={() => setIsLoading(false)}
+                  timeout={15000}
+                  onTimeout={() => console.log("timeout")}
+                >
+                  <>
+                    <ListItem
+                      key={index}
+                      secondaryAction={
+                        <IconButton
+                          onClick={() => {
+                            console.log("remove :" + index);
+                            onImageRemove(index);
+                          }}
+                          edge="end"
+                          aria-label="comments"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      }
+                    >
+                      <RModalImages
+                        className="modal"
+                        small={image.base64 ?? ""}
+                        medium={image.base64 ?? ""}
+                        large={image.base64 ?? ""}
+                        alt={image.url ?? ""}
+                        hideRotateButton
+                        hideZoomButton
+                      />
+                      <span
+                        style={{
+                          // align text to the right
+                          textAlign: "right",
                         }}
-                        edge="end"
-                        aria-label="comments"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    }
-                  >
-                    <RModalImages
-                      className="modal"
-                      small={image.base64 ?? ""}
-                      medium={image.base64 ?? ""}
-                      large={image.base64 ?? ""}
-                      alt={image.url ?? ""}
-                      hideRotateButton
-                      hideZoomButton
-                    />
-                    <span
-                      style={{
-                        // align text to the right
-                        textAlign: "right",
-                      }}
-                    ></span>
-                  </ListItem>
-                </>
+                      ></span>
+                    </ListItem>
+                  </>
+                </OnImagesLoaded>
               ))}
             </List>
           </Grid>

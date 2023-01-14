@@ -18,11 +18,9 @@ class UploadService
         try {
             $newFilename = Urlizer::urlize($fileName) . '-' . uniqid() . '.' . "png";
             $image_parts = explode(";base64,", $base64);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
             $image_en_base64 = base64_decode($image_parts[1]);
 
-            $newFile = $this->projectDir . "\\public\\images\\" . $newFilename;
+            $newFile = $this->projectDir . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . $newFilename;
             file_put_contents($newFile, $image_en_base64);
 
             // Save the GD resource as PNG in the best possible quality (no compression)
