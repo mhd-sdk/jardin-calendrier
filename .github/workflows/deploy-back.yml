@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  deploy-back:
     runs-on:
       - self-hosted
       - jardin-site
