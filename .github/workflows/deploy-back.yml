@@ -21,10 +21,3 @@ jobs:
           composer install
           php bin/console doctrine:schema:update --force
           php bin/console lexik:jwt:generate-keypair
-      - name: Build and Deploy Frontend
-        run: |
-          cd front
-          yarn install
-          echo "REACT_APP_API_BASE_URL=https://www.activite-jardin-api.duckdns.org/api/" >> .env 
-          npm run build
-          # deploy frontend code to server

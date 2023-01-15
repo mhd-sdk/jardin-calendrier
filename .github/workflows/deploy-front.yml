@@ -1,0 +1,23 @@
+name: Deploy to runnerjardin
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on:
+      - self-hosted
+      - jardin-site
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and Deploy Frontend
+        run: |
+          cd front
+          yarn install
+          echo "REACT_APP_API_BASE_URL=https://www.activite-jardin-api.duckdns.org/api/" >> .env 
+          npm run build
+          # deploy frontend code to server
