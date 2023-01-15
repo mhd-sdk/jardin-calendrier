@@ -81,6 +81,7 @@ export const Calendar = ({
         editable={false}
         selectMirror={true}
         dayMaxEvents={true}
+        selectable
         select={(arg) => {
           onSelect(arg);
         }}
