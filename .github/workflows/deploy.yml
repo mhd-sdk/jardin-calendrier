@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: save public/images
         run: |
-          cp -r back/public/images /var/www/backup/jardin-images
+          cp -r back/public/images /var/www/backup/images
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build and Deploy Backend
@@ -29,7 +29,7 @@ jobs:
           chmod 777 images
       - name: restore public/images
         run: |
-          cp -r /var/www/backup/jardin-images back/public/images
+          cp -r /var/www/backup/images back/public/
       - name: Build and Deploy Frontend
         run: |
           cd front
