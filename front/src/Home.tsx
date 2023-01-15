@@ -21,9 +21,32 @@ export function Home() {
             backgroundColor: theme.palette.primary.main,
           }}
         >
-          <Typography variant="h3" gutterBottom color="white">
-            Activité jardin de l’Ecole Lyonnaise de Plantes Médicinales
+          <Typography
+            variant="h4"
+            style={{
+              textAlign: "center",
+            }}
+            gutterBottom
+            color="white"
+          >
+            Jardins de l'Ecole Lyonnaise des Plantes Médicinales & des Savoirs
+            Naturels
           </Typography>
+
+          <img
+            alt="activite jardin"
+            style={{
+              display: "block",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              borderRadius: "10px",
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.5)",
+            }}
+            width="70%"
+            src="./activite.jpg"
+          />
           <Typography variant="body1" color="white" gutterBottom>
             L’activité jardin de l’Ecole Lyonnaise de plantes médicinales a été
             impulsé en 2011 par Cathy Skipper, d’abord dans le Beaujolais puis
@@ -76,20 +99,12 @@ export function Home() {
             gratuite, sans engagement dans le temps.
           </Typography>
 
-          <img
-            alt="activite jardin"
-            style={{
-              marginBottom: "2rem",
-              marginTop: "2rem",
-            }}
-            width="100%"
-            src="./activitephoto.jpg"
-          />
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               marginBottom: "2rem",
+              marginTop: "2rem",
               alignItems: "top",
             }}
           >
@@ -98,23 +113,35 @@ export function Home() {
                 width: "45%",
               }}
             >
-              <Typography variant="h3" color="white" gutterBottom>
+              <Typography
+                variant="h4"
+                style={{
+                  textAlign: "center",
+                }}
+                color="white"
+                gutterBottom
+              >
                 Jardin à DARDILLY
               </Typography>
-              <Typography variant="body1" color="white" gutterBottom>
+              <Typography
+                variant="body1"
+                style={{
+                  textAlign: "center",
+                }}
+                color="white"
+                gutterBottom
+              >
                 <div className="mapouter">
                   <div className="gmap_canvas">
                     <iframe
                       width="100%"
-                      height="500px"
-                      id="gmap_canvas"
+                      height="400px"
                       src="https://maps.google.com/maps?q=26%20chemin%20de%20la%20Bruy%C3%A8re%20-%2069570%20DARDILLY&t=&z=13&ie=UTF8&iwloc=&output=embed"
                     />
                   </div>
                 </div>
                 Lycée Horticole de l’Environnement & Paysage <br />
                 26 chemin de la Bruyère - 69570 DARDILLY <br />
-                Latitude : 45.8134 - Longitude : 4.7693 <br />
               </Typography>
             </div>
             <div
@@ -122,17 +149,30 @@ export function Home() {
                 width: "45%",
               }}
             >
-              <Typography variant="h3" color="white" gutterBottom>
+              <Typography
+                variant="h4"
+                style={{
+                  textAlign: "center",
+                }}
+                color="white"
+                gutterBottom
+              >
                 Jardin à GERLAND
               </Typography>
 
-              <Typography variant="body1" color="white" gutterBottom>
+              <Typography
+                style={{
+                  textAlign: "center",
+                }}
+                variant="body1"
+                color="white"
+                gutterBottom
+              >
                 <div className="mapouter">
                   <div className="gmap_canvas">
                     <iframe
                       width="100%"
-                      height="500px"
-                      id="gmap_canvas"
+                      height="400px"
                       src="https://maps.google.com/maps?q=24%20all%C3%A9e%20Pierre%20de%20Coubertin%2069007%20Lyon&t=&z=15&ie=UTF8&iwloc=&output=embed"
                     />
                   </div>

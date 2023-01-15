@@ -36,6 +36,7 @@ import EventsList from "./components/EventsList";
 import { Home } from "./Home";
 
 function App() {
+  document.title = "Activitées jardin";
   const eventsFetched = React.useRef(false);
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());

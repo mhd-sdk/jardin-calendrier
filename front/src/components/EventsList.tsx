@@ -121,7 +121,6 @@ export default function EventsList({
             return (
               <Card
                 sx={{
-                  maxWidth: 345,
                   minWidth: 345,
                   height: "auto",
                   margin: "5px",
