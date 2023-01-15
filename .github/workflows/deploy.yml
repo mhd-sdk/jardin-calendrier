@@ -12,6 +12,9 @@ jobs:
       - jardin-site
 
     steps:
+      - name: save public/images
+        run: |
+          cp -r back/public/images /var/www/backup/jardin-images
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build and Deploy Backend
@@ -24,6 +27,9 @@ jobs:
           php bin/console lexik:jwt:generate-keypair
           cd public
           chmod 777 images
+      - name: restore public/images
+        run: |
+          cp -r /var/www/backup/jardin-images back/public/images
       - name: Build and Deploy Frontend
         run: |
           cd front
