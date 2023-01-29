@@ -1,23 +1,26 @@
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./components/Theme";
 import { Swiper, SwiperSlide } from "swiper/react";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+
 import "swiper/css";
-import { List, ListItem, Paper, Typography } from "@mui/material";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-export function Home() {
+import { Paper, Typography } from "@mui/material";
+import { PersonAddDisabled } from "@mui/icons-material";
+export function Home(props: {
+  activeTab: number;
+  setActiveTab: (value: number) => void;
+}) {
   return (
     <ThemeProvider theme={theme}>
       <div
         style={{
-          height: "calc(100vh - 56px)",
           overflow: "auto",
         }}
       >
         <Paper
           id="scrollableHome"
           style={{
-            margin: "1rem 10rem 5rem 10rem ",
-            padding: "1rem",
+            padding: "0rem 10rem 0rem 10rem",
             backgroundColor: theme.palette.primary.main,
           }}
         >
@@ -29,76 +32,179 @@ export function Home() {
             gutterBottom
             color="white"
           >
-            Jardins de l'Ecole Lyonnaise des Plantes Médicinales & des Savoirs
-            Naturels
+            <br />
+            Venez partaer un moment convivial, à la rencontre des plantes
+            médicinales
           </Typography>
-
-          <img
-            alt="activite jardin"
+          <br />
+          <div
             style={{
-              display: "block",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-              borderRadius: "10px",
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.5)",
+              display: "flex",
             }}
-            width="70%"
-            src="./activite.jpg"
-          />
-          <Typography variant="body1" color="white" gutterBottom>
-            L’activité jardin de l’Ecole Lyonnaise de plantes médicinales a été
-            impulsé en 2011 par Cathy Skipper, d’abord dans le Beaujolais puis
-            en 2012 au parc de Gerland où nous avons 3 plates-bandes mises à
-            notre disposition par les espaces verts de la ville de Lyon.
-            <br />
-            <br />
-            Depuis 2019 les cours de l’Elpm ayant lieu au Lycée horticole de
-            Dardilly nous y avons installé une grande plate-bande de 120m2. Plus
-            de 100 espèces vues pendant les cours sont présentes tant à Gerland
-            qu’au lycée horticole. Ces journées jardin offrent aux élèves des
-            différentes années et à quelques anciens élèves, la possibilité de
-            se rencontrer pour partager, échanger, mutualiser leurs
-            connaissances autour des plantes.
-            <br />
-            <br /> L’attrait du public à Gerland, l’intérêt du personnel et
-            professeurs du lycée horticole de Dardilly et les échanges que nous
-            avons avec ces différentes personnes lors de nos journées
-            d’activités valorisent l’engagement des participants.es. pour donner
-            vie et entretenir ces 2 espaces. Participer à l’activité jardin
-            c’est aussi l’occasion de participer, préparer et animer des
-            interventions auprès du public lors de diverses manifestations :
-            <List dense>
-              <ListItem>
-                <ArrowRightIcon />
-                Distillation
-              </ListItem>
-              <ListItem>
-                <ArrowRightIcon />
-                Atelier : Sels aux herbes, Tisanes, Odeurs et parfums…
-              </ListItem>
-              <ListItem>
-                <ArrowRightIcon />
+          >
+            <div
+              style={{
+                marginRight: "2rem",
+              }}
+            >
+              <Typography variant="body1" color="white" gutterBottom>
+                <Typography variant="h5">Historique</Typography>
+                L’activité jardin de l’Ecole Lyonnaise de plantes médicinales a
+                été impulsé en 2011 par Cathy Skipper, d’abord dans le
+                Beaujolais puis en 2012 au parc de Gerland où nous avons 3
+                plates-bandes mises à notre disposition par les espaces verts de
+                la ville de Lyon.
+                <br />
+                Depuis 2019 les cours de l’Elpm ayant lieu au Lycée horticole de
+                Dardilly nous y avons installé une grande plate-bande de 120m2.
+                Plus de 100 espèces vues pendant les cours sont présentes tant à
+                Gerland qu’au lycée horticole. Ces journées jardin offrent aux
+                élèves des différentes années et à quelques anciens élèves, la
+                possibilité de se rencontrer pour partager, échanger, mutualiser
+                leurs connaissances autour des plantes.
+                <br />
+                <br />
+                <Typography variant="h5">Objectifs</Typography>
+                <ul
+                  style={{
+                    marginTop: "0",
+                  }}
+                >
+                  <li>
+                    Proposer aux élèves Herbalistes une expérience pratique de
+                    jardin de plantes médicinales : mieux connaître les plantes,
+                    leurs usages, les modes de récoltes, les préparations… ;
+                  </li>
+                  <li>
+                    Se retrouver entre Herbalistes en cours de formation et
+                    Herbalistes ayant terminés le cursus pour partager, échanger
+                    et mutualiser leurs connaissances autour des plantes ;
+                  </li>
+                  <li>
+                    Présenter au grand public tous les bienfaits des plantes
+                    médicinales.
+                  </li>
+                </ul>
+              </Typography>
+            </div>
+
+            <div
+              style={{
+                // center vertically content
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                textAlign: "center",
+              }}
+            >
+              <img
+                alt="activite jardin"
+                style={{
+                  display: "block",
+                  boxShadow: "0 0 10px 0 rgba(0,0,0,0.5)",
+                }}
+                width="100%"
+                src="./activite.jpg"
+              />
+            </div>
+          </div>
+          <Typography
+            style={{
+              color: "white",
+              // paddingLeft: "15rem",
+              paddingRight: "15rem",
+            }}
+          >
+            <Typography color="white" variant="h5">
+              En pratique
+            </Typography>
+            Des journées sont organisées tous au long de l’année (voir
+            Calendrier) pour entretenir le jardin. Nous avons à notre
+            disposition tout le matériel nécessaire pour semer, planter, tailler
+            et arroser. 3 journées par an sont réservées par année de formation.
+            Une activité différente est proposée en fonction de l’année de
+            formation. <br />
+            Exemples d’activités proposées :
+            <ul>
+              <li>
+                Pour les 1ères années : découverte de la flore de Jeanne
+                Covillot (disponible en vente à l’ELPM) ;
+              </li>
+              <li>
+                Pour les 2èmes années : atelier fabrication* d’un baume avec
+                utilisation des plantes du jardin ;
+              </li>
+              <li>
                 Visite commentée de plantes médicinales au Parc de Gerland, dans
                 les serres du parc de la Tête d’or
-              </ListItem>
-              <ListItem>
-                <ArrowRightIcon />
-                Participation à la fête de la Biodiversité en mai, et la fête de
-                la Courge en octobre au parc de la tête d’or
-              </ListItem>
-              <ListItem>
-                <ArrowRightIcon />
-                Participation au « troc de graines » organisée par le lycée
-                horticole, distillation.
-              </ListItem>
-            </List>
-            N’hésitez pas à venir nous rejoindre pour une ou plusieurs séances
-            selon vos disponibilités, l’activitéde jardin est volontaire,
-            gratuite, sans engagement dans le temps.
+              </li>
+              <li>Pour les 3èmes années : atelier fabrication* d’un savon.</li>
+            </ul>
+            Pour permettre à l’équipe des Jardins d’Herbaliste d’organiser ces
+            journées, merci de bien vouloir vous inscrire via la{" "}
+            <span
+              onClick={() => props.setActiveTab(2)}
+              style={{
+                // link
+                color: "white",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              page Activités
+            </span>{" "}
+            en cliquant sur l’icône
+            <PersonAddIcon />
           </Typography>
-
+          <br />
+          <Typography
+            style={{
+              color: "white",
+              // paddingLeft: "15rem",
+              paddingRight: "15rem",
+            }}
+          >
+            <Typography color="white" variant="h5">
+              Les points positifs des jardins d'herbalistes
+            </Typography>
+            <ul
+              style={{
+                marginTop: "0",
+              }}
+            >
+              <li>
+                L’attrait du public à Gerland, l’intérêt du personnel et
+                professeurs du lycée horticole de Dardilly et les échanges que
+                nous avons avec ces différentes personnes lors de nos journées
+                d’activités valorisent l’engagement des participant(e)s pour
+                donner vie et entretenir ces 2 espaces.
+              </li>
+              <li>
+                Participer à l’activité jardin c’est aussi l’occasion de
+                participer, préparer et animer des interventions auprès du
+                public lors de diverses manifestations via l’association Graines
+                et Nature{" "}
+                <span
+                  style={{
+                    // link
+                    color: "white",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => props.setActiveTab(1)}
+                >
+                  (voir page dédiée)
+                </span>
+                :
+              </li>
+            </ul>
+            N’hésitez pas à venir nous rejoindre pour une ou plusieurs séances
+            selon vos disponibilités, l’activité de jardin est volontaire,
+            gratuite, sans engagement dans le temps. <br />* il s’agit d’une
+            démonstration. Les participants ne repartent pas avec les produits
+            préparés.
+          </Typography>
           <div
             style={{
               display: "flex",

@@ -34,6 +34,7 @@ import { getEvents } from "./utils/api/api";
 import CreateEventModal from "./components/CreateEventModal/CreateEventModal";
 import EventsList from "./components/EventsList";
 import { Home } from "./Home";
+import Association from "./Association";
 
 function App() {
   document.title = "Activitées jardin";
@@ -161,9 +162,6 @@ function App() {
             position="static"
           >
             <Toolbar variant="dense">
-              <Typography variant="h6" color="inherit" component="div">
-                Calendrier des événements jardin
-              </Typography>
               <StyledTabs>
                 <Tabs
                   sx={{
@@ -191,8 +189,9 @@ function App() {
                   textColor="inherit"
                   variant="standard"
                 >
-                  <Tab label="Accueil" />
-                  <Tab label="Activitées" />
+                  <Tab label="Jardins d'Herbalistes" />
+                  <Tab label="Association Graines et Nature" />
+                  <Tab label="Activités" />
                   <Tab label="Calendrier" />
                 </Tabs>
               </StyledTabs>
@@ -235,7 +234,7 @@ function App() {
           </AppBar>
         </Box>
 
-        <Box flex={1}>
+        <Box style={{}} flex={1}>
           <SwipeableViews
             style={{
               height: "calc(100vh - 56px)",
@@ -247,7 +246,9 @@ function App() {
             index={activeTab}
             onChangeIndex={handleChangeIndex}
           >
-            <Home></Home>
+            <Home activeTab={activeTab} setActiveTab={setActiveTab} />
+            <Association />
+
             <EventsList
               isAuthenticated={isAuthenticated}
               refreshEvents={refreshEvents}
