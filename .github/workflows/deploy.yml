@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and Deploy Backend
         run: |
-          chmod 777 -R back
           cd back
           echo "DATABASE_URL=${{ secrets.DATABASE_URL_JARDIN }}" >> .env
           composer install
