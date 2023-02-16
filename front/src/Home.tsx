@@ -33,7 +33,7 @@ export function Home(props: {
             color="white"
           >
             <br />
-            Venez partaer un moment convivial, à la rencontre des plantes
+            Venez partager un moment convivial, à la rencontre des plantes
             médicinales
           </Typography>
           <br />
@@ -47,21 +47,27 @@ export function Home(props: {
                 marginRight: "2rem",
               }}
             >
-              <Typography variant="body1" color="white" gutterBottom>
-                <Typography variant="h5">Historique</Typography>
-                L’activité jardin de l’Ecole Lyonnaise de plantes médicinales a
+              <Typography
+                variant="body1"
+                align="justify"
+                color="white"
+                gutterBottom
+              >
+                <Typography align="justify" variant="h5">
+                  Historique
+                </Typography>
+                L’activité jardin de l’École Lyonnaise des plantes médicinales a
                 été impulsé en 2011 par Cathy Skipper, d’abord dans le
                 Beaujolais puis en 2012 au parc de Gerland où nous avons 3
                 plates-bandes mises à notre disposition par les espaces verts de
-                la ville de Lyon.
-                <br />
-                Depuis 2019 les cours de l’Elpm ayant lieu au Lycée horticole de
-                Dardilly nous y avons installé une grande plate-bande de 120m2.
-                Plus de 100 espèces vues pendant les cours sont présentes tant à
-                Gerland qu’au lycée horticole. Ces journées jardin offrent aux
-                élèves des différentes années et à quelques anciens élèves, la
-                possibilité de se rencontrer pour partager, échanger, mutualiser
-                leurs connaissances autour des plantes.
+                la ville de Lyon. Depuis 2019 les cours de l’Elpm ayant lieu au
+                Lycée horticole de Dardilly nous y avons installé une grande
+                plate-bande de 120m². Plus de 100 espèces vues pendant les cours
+                sont présentes tant à Gerland qu’au lycée horticole. Ces
+                journées jardin offrent aux élèves des différentes années et à
+                quelques anciens élèves, la possibilité de se rencontrer pour
+                partager, échanger, mutualiser leurs connaissances autour des
+                plantes.
                 <br />
                 <br />
                 <Typography variant="h5">Objectifs</Typography>
@@ -73,12 +79,12 @@ export function Home(props: {
                   <li>
                     Proposer aux élèves Herbalistes une expérience pratique de
                     jardin de plantes médicinales : mieux connaître les plantes,
-                    leurs usages, les modes de récoltes, les préparations… ;
+                    leurs usages, les modes de récoltes, les préparations… 
                   </li>
                   <li>
                     Se retrouver entre Herbalistes en cours de formation et
-                    Herbalistes ayant terminés le cursus pour partager, échanger
-                    et mutualiser leurs connaissances autour des plantes ;
+                    Herbalistes ayant terminé le cursus pour partager, échanger
+                    et mutualiser leurs connaissances autour des plantes 
                   </li>
                   <li>
                     Présenter au grand public tous les bienfaits des plantes
@@ -113,36 +119,44 @@ export function Home(props: {
             style={{
               color: "white",
               // paddingLeft: "15rem",
-              paddingRight: "15rem",
+              paddingRight: "25rem",
             }}
+            align="justify"
           >
             <Typography color="white" variant="h5">
               En pratique
             </Typography>
-            Des journées sont organisées tous au long de l’année (voir
+            Des journées sont organisées toutes au long de l’année (voir
             Calendrier) pour entretenir le jardin. Nous avons à notre
             disposition tout le matériel nécessaire pour semer, planter, tailler
             et arroser. 3 journées par an sont réservées par année de formation.
             Une activité différente est proposée en fonction de l’année de
             formation. <br />
-            Exemples d’activités proposées :
-            <ul>
+            Exemples d’activités proposées:
+            <ul
+              style={{
+                marginTop: "0",
+                textAlign: "justify",
+              }}
+            >
               <li>
-                Pour les 1ères années : découverte de la flore de Jeanne
-                Covillot (disponible en vente à l’ELPM) ;
+                Pour les 1ères années: découverte de la flore de Jeanne Covillot
+                (disponible en vente à l’ELPM)
               </li>
               <li>
-                Pour les 2èmes années : atelier fabrication* d’un baume avec
-                utilisation des plantes du jardin ;
+                Pour les 2èmes années: atelier fabrication* d’un baume avec
+                utilisation des plantes du jardin
               </li>
               <li>
                 Visite commentée de plantes médicinales au Parc de Gerland, dans
                 les serres du parc de la Tête d’or
               </li>
-              <li>Pour les 3èmes années : atelier fabrication* d’un savon.</li>
+              <li>Pour les 3èmes années: atelier fabrication* d’un savon.</li>
             </ul>
-            Pour permettre à l’équipe des Jardins d’Herbaliste d’organiser ces
-            journées, merci de bien vouloir vous inscrire via la{" "}
+            * il s’agit d’une démonstration. Les participants ne repartent pas
+            avec les produits préparés.
+            <br /> Pour permettre à l’équipe des Jardins d’Herbaliste
+            d’organiser ces journées, merci de bien vouloir vous inscrire via la{" "}
             <span
               onClick={() => props.setActiveTab(2)}
               style={{
@@ -150,20 +164,28 @@ export function Home(props: {
                 color: "white",
                 textDecoration: "underline",
                 cursor: "pointer",
+                margin: "0px",
               }}
             >
               page Activités
             </span>{" "}
             en cliquant sur l’icône
-            <PersonAddIcon />
+            <span
+              style={{
+                marginLeft: "0.5rem",
+              }}
+            >
+              <PersonAddIcon />
+            </span>
           </Typography>
           <br />
           <Typography
             style={{
               color: "white",
               // paddingLeft: "15rem",
-              paddingRight: "15rem",
+              paddingRight: "25rem",
             }}
+            align="justify"
           >
             <Typography color="white" variant="h5">
               Les points positifs des jardins d'herbalistes
@@ -171,6 +193,7 @@ export function Home(props: {
             <ul
               style={{
                 marginTop: "0",
+                textAlign: "justify",
               }}
             >
               <li>
@@ -201,9 +224,7 @@ export function Home(props: {
             </ul>
             N’hésitez pas à venir nous rejoindre pour une ou plusieurs séances
             selon vos disponibilités, l’activité de jardin est volontaire,
-            gratuite, sans engagement dans le temps. <br />* il s’agit d’une
-            démonstration. Les participants ne repartent pas avec les produits
-            préparés.
+            gratuite, sans engagement dans le temps.
           </Typography>
           <div
             style={{

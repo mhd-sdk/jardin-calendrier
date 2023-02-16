@@ -37,7 +37,7 @@ import { Home } from "./Home";
 import Association from "./Association";
 
 function App() {
-  document.title = "Activitées jardin";
+  document.title = "Activités jardin";
   const eventsFetched = React.useRef(false);
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());
@@ -310,48 +310,6 @@ const StyledTabs = styled("div")((props) => ({
   alignItems: "center",
 }));
 
-const Search = styled("div")((props) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.dark, 0.55),
-  transition: "all 2s smooth",
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.primary.dark, 0.75),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [props.theme.breakpoints.up("sm")]: {
-    marginLeft: props.theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "13ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
 export default function IntegrationNotistack() {
   return (
     <SnackbarProvider maxSnack={3}>
