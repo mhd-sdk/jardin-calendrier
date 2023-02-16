@@ -15,24 +15,8 @@ type Props = {};
 export default function Association({}: Props) {
   const itemData = [
     {
-      img: "activités-exemples/Animations-enfants.jpg",
-      title: "Animation pour enfants dans une école primaire",
-      author: "Graines et Nature",
-      rows: 2,
-      cols: 2,
-      featured: true,
-    },
-    {
       img: "activités-exemples/Animations-enfants-2.jpg",
       title: "Animation pour enfants dans une école primaire",
-      author: "Graines et Nature",
-      rows: 2,
-      cols: 2,
-      featured: true,
-    },
-    {
-      img: "activités-exemples/Ehpad.jpg",
-      title: "Animation dans un EHPAD",
       author: "Graines et Nature",
       rows: 2,
       cols: 2,
@@ -47,8 +31,24 @@ export default function Association({}: Props) {
       featured: true,
     },
     {
+      img: "activités-exemples/Ehpad.jpg",
+      title: "Animation dans un EHPAD",
+      author: "Graines et Nature",
+      rows: 2,
+      cols: 2,
+      featured: true,
+    },
+    {
       img: "activités-exemples/animation-serres.jpg",
       title: "Visite commentée dans les serres du parc de la Tête d'Or",
+      author: "Graines et Nature",
+      rows: 2,
+      cols: 2,
+      featured: true,
+    },
+    {
+      img: "activités-exemples/Animations-enfants.jpg",
+      title: "Animation pour enfants dans une école primaire",
       author: "Graines et Nature",
       rows: 2,
       cols: 2,
