@@ -31,7 +31,7 @@ jobs:
           chmod 777 images
       - name: restore public/images
         run: |
-          cp -r /var/www/backup/images back/public/
+          cp -r /var/www/backup/images back/public/images
       - name: Build and Deploy Frontend
         run: |
           cd front
