@@ -36,6 +36,11 @@ import EventsList from "./components/EventsList";
 import { Home } from "./Home";
 import Association from "./Association";
 
+// empty the react-fullscreen-slideshow-gallery-title class div
+document.getElementsByClassName(
+  "react-fullscreen-slideshow-gallery-title"
+)[0].innerHTML = "";
+
 function App() {
   document.title = "Activités jardin";
   const eventsFetched = React.useRef(false);
