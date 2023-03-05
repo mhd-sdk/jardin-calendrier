@@ -11,16 +11,15 @@ jobs:
       - self-hosted
 
     steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
       - name: Cache images directory
         uses: actions/cache@v2
         with:
           path: back/public/images
           key: images-${{ runner.os }}
-        
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build and Deploy Backend
         run: |
           cd back
