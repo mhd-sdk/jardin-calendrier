@@ -14,7 +14,7 @@ jobs:
       - name: save public/images
         run: |
           # only if public/images does not exist, create it first 
-          mkdir -p /var/www/backup/images
+          mkdir -p back/public/images
           cp -r back/public/images /var/www/backup/images
       - name: Checkout code
         uses: actions/checkout@v2
