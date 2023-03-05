@@ -35,7 +35,6 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 export interface FullScreenDialogProps {
   event: EventType;
   setEvent: React.Dispatch<React.SetStateAction<EventType>>;
