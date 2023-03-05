@@ -11,15 +11,16 @@ jobs:
       - self-hosted
 
     steps:
-      - name: save public/images
-        run: |
-          # clear /var/www/backup/images
-          rm -rf /var/www/backup/images/*
-          # copy public/images to /var/www/backup/images
-          cp -r back/public/images /var/www/backup/images
 
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Cache images directory
+        uses: actions/cache@v2
+        with:
+          path: public/images
+          key: images-${{ runner.os }}
+        
       - name: Build and Deploy Backend
         run: |
           cd back
@@ -29,9 +30,6 @@ jobs:
           php bin/console lexik:jwt:generate-keypair
           cd public
           chmod 777 images
-      - name: restore public/images
-        run: |
-          cp -r /var/www/backup/images back/public/images
       - name: Build and Deploy Frontend
         run: |
           cd front
