@@ -37,8 +37,11 @@ import { Home } from "./Home";
 import Association from "./Association";
 
 // empty the react-fullscreen-slideshow-gallery-title class div
+// @ts-ignore
 document.getElementsByClassName(
+  // @ts-ignore
   "react-fullscreen-slideshow-gallery-title"
+  // @ts-ignore
 )[0].innerHTML = "";
 
 function App() {
