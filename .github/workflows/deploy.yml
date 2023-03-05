@@ -18,7 +18,7 @@ jobs:
       - name: Cache images directory
         uses: actions/cache@v2
         with:
-          path: public/images
+          path: back/public/images
           key: images-${{ runner.os }}
         
       - name: Build and Deploy Backend
