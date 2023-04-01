@@ -23,6 +23,7 @@ import {
   StyledEngineProvider,
   Grid,
   Box,
+  Button,
 } from "@mui/material";
 import type {} from "@mui/x-date-pickers/themeAugmentation";
 import { SnackbarProvider, useSnackbar, VariantType } from "notistack";
@@ -35,6 +36,7 @@ import CreateEventModal from "./components/CreateEventModal/CreateEventModal";
 import EventsList from "./components/EventsList";
 import { Home } from "./Home";
 import Association from "./Association";
+import RgpdDialog from "./components/RgpdDialog/RgpdDialog";
 
 function App() {
   document.title = "Activités jardin";
@@ -129,6 +131,8 @@ function App() {
       });
   };
 
+  const [isRgpdOpen, setIsRgpdOpen] = React.useState(false);
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -162,6 +166,20 @@ function App() {
             position="static"
           >
             <Toolbar variant="dense">
+              <Button
+                sx={{
+                  zIndex: 100,
+                  color: "white",
+                }}
+                variant="text"
+                onClick={() => setIsRgpdOpen(true)}
+              >
+                Politique de confidentialité
+              </Button>
+              <RgpdDialog
+                isOpen={isRgpdOpen}
+                onClose={() => setIsRgpdOpen(false)}
+              />
               <StyledTabs>
                 <Tabs
                   sx={{
@@ -195,7 +213,6 @@ function App() {
                   <Tab label="Calendrier" />
                 </Tabs>
               </StyledTabs>
-
               <AppBarActions>
                 {/* <Search>
                 <SearchIconWrapper>
