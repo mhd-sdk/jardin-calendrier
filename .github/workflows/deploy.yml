@@ -11,24 +11,18 @@ jobs:
       - self-hosted
 
     steps:
-      - name: Cache images directory
-        uses: actions/cache@v2
-        with:
-          path: back/public/images
-          key: images-${{ runner.os }}
-
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and Deploy Backend
-        run: |
-          cd back
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL_JARDIN }}" >> .env
-          composer install
-          php bin/console doctrine:schema:update --force
-          php bin/console lexik:jwt:generate-keypair
-          cd public
-          chmod 777 images
+      # - name: Build and Deploy Backend
+      #   run: |
+      #     cd back
+      #     echo "DATABASE_URL=${{ secrets.DATABASE_URL_JARDIN }}" >> .env
+      #     composer install
+      #     php bin/console doctrine:schema:update --force
+      #     php bin/console lexik:jwt:generate-keypair
+      #     cd public
+      #     chmod 777 images
       - name: Build and Deploy Frontend
         run: |
           cd front
