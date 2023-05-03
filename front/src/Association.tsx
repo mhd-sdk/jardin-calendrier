@@ -15,7 +15,7 @@ type Props = {};
 export default function Association({}: Props) {
   const itemData = [
     {
-      img: "activités-exemples/Animations-enfants-2.jpg",
+      img: "activites-exemples/Animations-enfants-2.jpg",
       title: "Animation pour enfants dans une école primaire",
       author: "Graines et Nature",
       rows: 2,
@@ -23,7 +23,7 @@ export default function Association({}: Props) {
       featured: true,
     },
     {
-      img: "activités-exemples/Ehpad-2.jpg",
+      img: "activites-exemples/Ehpad-2.jpg",
       title: "Animation dans un EHPAD",
       author: "Graines et Nature",
       rows: 2,
@@ -31,7 +31,7 @@ export default function Association({}: Props) {
       featured: true,
     },
     {
-      img: "activités-exemples/Ehpad.jpg",
+      img: "activites-exemples/Ehpad.jpg",
       title: "Animation dans un EHPAD",
       author: "Graines et Nature",
       rows: 2,
@@ -39,7 +39,7 @@ export default function Association({}: Props) {
       featured: true,
     },
     {
-      img: "activités-exemples/animation-serres.jpg",
+      img: "activites-exemples/animation-serres.jpg",
       title: "Visite commentée dans les serres du parc de la Tête d'Or",
       author: "Graines et Nature",
       rows: 2,
@@ -47,7 +47,7 @@ export default function Association({}: Props) {
       featured: true,
     },
     {
-      img: "activités-exemples/Animations-enfants.jpg",
+      img: "activites-exemples/Animations-enfants.jpg",
       title: "Animation pour enfants dans une école primaire",
       author: "Graines et Nature",
       rows: 2,
@@ -108,7 +108,7 @@ export default function Association({}: Props) {
             }}
           >
             <li>
-              Proposer des activités spécifiques par année de formation
+              Proposer des activites spécifiques par année de formation
               d’Herbaliste,
             </li>
             <li>
